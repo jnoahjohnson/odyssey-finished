@@ -46,3 +46,6 @@ def newPageView(request):
 
 def lastPageView(request):
     return render(request, 'library/last.html')
+
+def anotherPageView(request):
+    return render(request, "library/another.html")
