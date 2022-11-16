@@ -40,3 +40,6 @@ def bookPageView(request, book_id):
     }
 
     return render(request, 'library/book.html', context)
+
+def newPageView(request):
+    return render(request, "library/new.html")
