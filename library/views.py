@@ -43,3 +43,6 @@ def bookPageView(request, book_id):
 
 def newPageView(request):
     return render(request, "library/new.html")
+
+def anotherPageView(request):
+    return render(request, "library/another.html")
