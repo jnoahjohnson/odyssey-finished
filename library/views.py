@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from .models import Book, List
 
 book_list = {
     '1': {
@@ -26,8 +27,13 @@ book_list = {
 
 # Create your views here.
 def indexPageView(request):
+    db_books = Book.objects.all()
+
+    for book in db_books:
+        print(book.author.name)
+
     context = {
-        'books': book_list.values()
+        'books': db_books
     }
     return render(request, 'library/index.html', context)
 
@@ -36,7 +42,7 @@ def bookPageView(request, book_id):
     # find book in book list given a title
 
     context = {
-        'book': book_list[book_id]
+        'book': Book.objects.get(id=book_id)
     }
 
     return render(request, 'library/book.html', context)
@@ -49,3 +55,13 @@ def lastPageView(request):
 
 def anotherPageView(request):
     return render(request, "library/another.html")
+
+
+def listsPageView(request):
+    lists = List.objects.all()
+
+    context = {
+        'lists': lists
+    }
+
+    return render(request, 'library/lists.html', context)
