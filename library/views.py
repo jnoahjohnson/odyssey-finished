@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from .models import Book, List
+from django.shortcuts import render, redirect
+from .models import Book, List, Author
 
 book_list = {
     '1': {
@@ -65,3 +65,49 @@ def listsPageView(request):
     }
 
     return render(request, 'library/lists.html', context)
+
+def searchPageView(request):
+    return render(request, 'library/search.html')
+
+def searchBooks(request):
+    title = request.GET['title']
+
+    db_books = Book.objects.filter(title=title)
+
+    for book in db_books:
+        print(book.author.name)
+
+    context = {
+        'books': db_books
+    }
+    return render(request, 'library/index.html', context)
+
+    
+def addBook(request):
+    if request.method == 'POST':
+        title = request.POST['title']
+        author = request.POST['author']
+        description = request.POST['description']
+
+        new_book = Book()
+        new_book.title = title
+        new_book.description = description
+
+        author = Author.objects.get(id=author)
+
+        new_book.author = author
+
+        new_book.save()
+
+        return redirect('index')
+    else:
+        # Get Request
+
+        authors = Author.objects.all()
+
+        context = {
+            'authors': authors
+        }
+        
+        return render(request, 'library/add.html', context)
+
